@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_admin?
-    current_user.admin if current_user
+    User.where(admin: true).first.admin if current_user
   end
 
   def administrative

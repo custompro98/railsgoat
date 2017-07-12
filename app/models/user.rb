@@ -13,7 +13,6 @@ class User < ApplicationRecord
   attr_accessor :skip_user_id_assign
   attr_accessor :skip_hash_password
   before_save :assign_user_id, :on => :create
-  before_save :hash_password
   has_one :retirement, :foreign_key => :user_id, :primary_key => :user_id, :dependent => :destroy
   has_one :paid_time_off, :foreign_key => :user_id, :primary_key => :user_id, :dependent => :destroy
   has_one :work_info, :foreign_key => :user_id, :primary_key => :user_id, :dependent => :destroy
@@ -48,10 +47,10 @@ class User < ApplicationRecord
     auth = nil
     user = find_by_email(email)
     raise "#{email} doesn't exist!" if !(user)
-    if user.password == Digest::MD5.hexdigest(password)
+    if user.password == password
       auth = user
     else
-      raise "Incorrect Password!"
+      raise "Incorrect password!"
     end
     return auth
   end
